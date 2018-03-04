@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- window action -->
+    <!--
+        The following tag is an action definition for a "window action",
+        that is an action opening a view or a set of views
+    -->
+    <record model="ir.actions.act_window" id="ready_mix_rate_approval_form">
+        <field name="name">Ready Mix Rate Approval</field>
+        <field name="res_model">rate.approval</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first ready mix rate approval
+            </p>
+        </field>
+    </record>
+
+    <!--Read Mix Rate Approval Tree View-->
+    <record id="rm_rate_approval_tree" model="ir.ui.view">
+        <field name="name">Read Mix Rate Approval</field>
+        <field name="model">rate.approval</field>
+        <field name="arch" type="xml">
+            <tree string="Ready Mix Rate Approval">
+                <field name="partner_id"/>
+                <field name="strength" string="Strength(PSI)"/>
+                <field name="partner_delivery_location"/>
+                <field name="date" string="Date"/>
+                <field name="state" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--Read Mix Rate Approval Form-->
+    <record id="rm_rate_approval_form" model="ir.ui.view">
+        <field name="name">rate.approval.form</field>
+        <field name="model">rate.approval</field>
+        <field name="arch" type="xml">
+            <form string="Read Mix Rate Approval">
+                <header>
+                    <button name="action_ra_send" string="Send by Email" type="object" states="draft" context="{'send_ra':True}" class="oe_highlight" />
+                    <button name="button_confirm" type="object" states="draft" string="Confirm Rate" class="oe_highlight" groups="base.group_user"/>
+                    <button name="button_approve" type="object" states='rate_approve' string="Rate Approved" groups="rate_approve.group_md" class="oe_highlight" attrs="{'invisible': [('state', 'not in', ['draft'])]}"/>
+                    <button string="Reset to draft" type="object" name="action_draft" states="rate_approve,done"/>
+                    <button name="button_print" states="confirmed,done" string="Print" type="object" class="btn-primary"/>
+                    <button name="button_print" states="draft" string="Print" type="object" class="btn-primary"/>
+                    <button name="button_cancel" states="draft,confirm,rate_approve" string="Cancel" type="object" />
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirm,rate_approve" readonly="1"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="title" string="Title"/>
+                            <field name="strength" string="Strength(PSI)"/>
+                            <field name="partner_id" context="{'search_default_customer':1, 'default_customer':0}" domain="[('customer','=',True)]"/>
+                        </group>
+                        <group>
+                            <field name="partner_delivery_location" eval="ok"/>
+                            <field name="date"/>
+                            <field name="state" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Materials">
+                            <field name="material_line">
+                                <tree string="Materials" editable="bottom">
+                                    <field name="product_id" string="Name Of The Materials"/>
+                                    <field name="product_uom" string="Unit Volume"/>
+                                    <field name="product_qty"/>
+                                    <field name="price_unit"/>
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="price_total" widget="monetary"/>
+                                </tree>
+                                <form string="Materials Line">
+                                    <sheet>
+                                        <group>
+                                            <group>
+                                                <field name="product_id"/>
+                                                <label for="product_qty"/>
+                                                <div>
+                                                    <field name="product_qty" class="oe_inline"/>
+                                                    <span class="oe_inline">&#160;</span>
+                                                    <field name="product_uom"/>
+                                                </div>
+                                                <field name="price_unit"/>
+                                            </group>
+                                        </group>
+                                    </sheet>
+                                </form>
+                            </field>
+                            <group width="37%" fonts="bold">
+                                <div class="oe_left">
+                                    <label for="design_volume"/>
+                                </div>
+                                <field name="design_volume" nolabel="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                    <notebook>
+                        <page string="Admixture">
+                            <field name="admixture_line">
+                                <tree string="Admixture" editable="bottom" >
+                                    <field name="product_id" string=""/>
+                                    <field name="product_uom" string=""/>
+                                    <field name="product_qty"/>
+                                    <field name="price_unit"/>
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="price_total" widget="monetary"/>
+                                </tree>
+                                <form string="Materials Line">
+                                    <sheet>
+                                        <group>
+                                            <group>
+                                                <field name="product_id"/>
+                                                <label for="product_qty"/>
+                                                <div>
+                                                    <field name="product_qty" class="oe_inline"/>
+                                                    <span class="oe_inline">&#160;</span>
+                                                    <field name="product_uom"/>
+                                                </div>
+                                                <field name="price_unit"/>
+                                            </group>
+                                        </group>
+                                    </sheet>
+                                </form>
+                            </field>
+                            <group>
+                                 <field name="currency_id" invisible="1"/>
+                                <field name="prime_cost" class="oe_right" widget="monetary"/>
+                            </group>
+                        </page>
+                    </notebook>
+                    <notebook>
+                        <page>
+                            <field name="fixed_expense_line">
+                                <tree editable="bottom" >
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="label" string=""/>
+                                    <field name="amount" string="" widget="monetary"/>
+                                </tree>
+                                <form>
+                                    <sheet>
+                                        <group>
+                                            <group>
+                                                <field name="label"/>
+                                                <field name="amount"/>
+                                            </group>
+                                        </group>
+                                    </sheet>
+                                </form>
+                            </field>
+                            <group>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="total_cost" class="oe_right" widget="monetary"/>
+                            </group>
+                            <group>
+                                <field name="grand_total_cost" class="oe_right" widget="monetary"/>
+                            </group>
+                        </page>
+                    </notebook>
+                    <notebook>
+                        <page>
+                            <field name="unit_cost_line" id="unit_cost_line">
+                                <tree editable="bottom">
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="label" string=""/>
+                                    <field name="amount" string=""  widget="monetary"/>
+                                </tree>
+                                <form>
+                                    <sheet>
+                                        <group>
+                                            <group>
+                                                <field name="label"/>
+                                                <field name="amount"/>
+                                            </group>
+                                        </group>
+                                    </sheet>
+                                </form>
+                            </field>
+                            <group style="font-size:18px">
+                                <field name="present_price" class="oe_right" widget="monetary"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!--Read Mix Rate Approval Filter-->
+    <record id="view_rate_approval_filter" model="ir.ui.view">
+        <field name="name">rate.approval.filter</field>
+        <field name="model">rate.approval</field>
+        <field name="arch" type="xml">
+            <search string="Search Rate Approve">
+                <field name="partner_id" string="Name of The Client" filter_domain="[('partner_id','ilike',self)]"/>
+                <field name="strength" string="Strength(PSI)"/>
+                <field name="partner_delivery_location"/>
+                <field name="date" string="Date"/>
+                <field name="state" invisible="1"/>
+                <filter string="My Read Mix Rate Approval" domain="[('create_uid','=',uid)]" name="my_rate_approval_filter"/>
+                <separator/>
+
+                <group expand="0" string="Group By">
+                    <filter string="Date" domain="[]" context="{'group_by':'date:day'}"/>
+                    <filter name="Delivery Location" string="Delivery Location" domain="[]" context="{'group_by':'partner_delivery_location'}"/>
+                    <filter string="Client" domain="[]" context="{'group_by':'partner_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="rate_approval_action_generic" model="ir.actions.act_window">
+        <field name="name">Read Mix Rate Approval</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">rate.approval</field>
+        <field name="view_id" ref="rm_rate_approval_form"/>
+    </record>
+
+</odoo>

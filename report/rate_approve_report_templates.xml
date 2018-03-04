@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <template id="rate_approval_view">
+        <t t-call="report.html_container">
+            <t t-call="report.internal_layout">
+                <!-- <t t-call="report.external_layout"> -->
+                <div class="page">
+                    <h2>TITLE FOR YOUR REPORT</h2>
+                    <!--
+                    Build your report here!
+                    Do it in awesome way ;)
+                    -->
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

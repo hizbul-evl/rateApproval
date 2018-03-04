@@ -1,0 +1,24 @@
+<odoo>
+
+    <report
+            id="rate_approval"
+            model="rate.approval"
+            string="Rate Approval"
+            name="rate_approval.rate_approval_report_template"
+            report_type="qweb-pdf" />
+
+    <template id="rate_approval_report_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <!-- <t t-call="report.external_layout"> -->
+                <div class="page">
+                    <h2>TITLE FOR YOUR REPORT</h2>
+                    <!--
+                    Build your report here!
+                    Do it in awesome way ;)
+                    -->
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

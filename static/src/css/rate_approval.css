@@ -1,0 +1,4 @@
+div[name="unit_cost_line"] thead, div[name="fixed_expense_line"] thead{
+    display: none;
+}
+

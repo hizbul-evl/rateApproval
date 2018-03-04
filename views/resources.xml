@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets_backend" name="ra_asset assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" href="/rate_approval/static/src/css/rate_approval.css"/>
+        </xpath>
+    </template>
+</odoo>

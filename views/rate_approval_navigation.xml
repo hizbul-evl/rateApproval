@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+     <!-- top level menu: no parent -->
+    <menuitem id="main_rate_approval_menu" name="Rate Approval"/>
+
+    <!-- A first level in the left side menu is needed
+         before using action= attribute -->
+    <menuitem id="sub_rate_approval_menu" name="Rate Approval"
+              parent="main_rate_approval_menu"/>
+    <!-- the following menuitem should appear *after*
+         its parent openacademy_menu and *after* its
+         action course_list_action -->
+    <menuitem id="ready_mix_rate_approval" name="Ready Mix Rate Approval" parent="sub_rate_approval_menu"
+              action="ready_mix_rate_approval_form"/>
+    <menuitem id="block_rate_approval" name="Block Rate Approval" parent="sub_rate_approval_menu"
+              action="block_rate_approval_form"/>
+    <!-- Full id location:
+         action="rate_approval.course_list_action"
+         It is not required when it is the same module -->
+
+</odoo>
